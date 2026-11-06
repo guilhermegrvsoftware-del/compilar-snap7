@@ -16,7 +16,7 @@ jobs:
     - name: Baixar e extrair Snap7
       run: |
         mkdir -p snap7 && cd snap7
-        wget -O snap7.7z "https://sourceforge.net"
+        wget --user-agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64)" -O snap7.7z "https://sourceforge.net"
         7z x -y snap7.7z
 
     - name: Compilar para ARM64
