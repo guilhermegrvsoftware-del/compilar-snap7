@@ -15,11 +15,7 @@ jobs:
 
     - name: Clonar código do Snap7 Oficial
       run: |
-        git clone https://github.com snap7-source
-        # Entrar na pasta correta que o Git cria
-        mkdir -p snap7
-        mv snap7-source/* snap7/
-        mv snap7-source/.[!.]* snap7/ 2>/dev/null || true
+        git clone https://github.com snap7
 
     - name: Compilar para ARM64
       run: |
