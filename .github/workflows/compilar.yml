@@ -11,15 +11,18 @@ jobs:
     - name: Instalar compilador ARM64 e ferramentas
       run: |
         sudo apt update
-        sudo apt install -y build-essential g++-aarch64-linux-gnu sed git
+        sudo apt install -y build-essential g++-aarch64-linux-gnu p7zip-full sed wget
 
-    - name: Clonar código do Snap7 Oficial
+    - name: Baixar e extrair Snap7 v1.4.2
       run: |
-        git clone https://github.com snap7
+        mkdir -p snap7-build && cd snap7-build
+        # Baixando de um espelho alternativo para evitar o bloqueio 403 do SourceForge
+        wget --user-agent="Mozilla" https://sourceforge.net || wget --user-agent="Mozilla" https://sourceforge.net
+        7z x -y snap7-full-1.4.2.7z
 
     - name: Compilar para ARM64
       run: |
-        cd snap7/build/unix
+        cd snap7-build/snap7-full-1.4.2/build/unix
         sed -e 's/x86_64/aarch64/g' -e 's/-m64//g' -e 's/G++ = g++/G++ = aarch64-linux-gnu-g++/g' x86_64_linux.mk > aarch64_linux.mk
         make -f aarch64_linux.mk
 
@@ -27,4 +30,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: libsnap7-arm64
-        path: snap7/bin/aarch64-linux/libsnap7.so
+        path: snap7-build/snap7-full-1.4.2/bin/aarch64-linux/libsnap7.so
